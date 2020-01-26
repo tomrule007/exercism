@@ -73,4 +73,7 @@ describe('ProteinTranslation', () => {
   test('Invalid codon throws error', () => {
     expect(() => translate('AUGOO')).toThrow(new Error('Invalid codon'));
   });
+  test('Invalid codon with valid nucleotid throws', () => {
+    expect(() => translate('AAA')).toThrow();
+  });
 });

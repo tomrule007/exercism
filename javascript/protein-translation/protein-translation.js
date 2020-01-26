@@ -3,15 +3,7 @@
 // convenience to get you started writing code faster.
 //
 
-export const translate = rnaSequence => {
-  if (!rnaSequence) return [];
-
-  const validCodons = /[ACGU]{3}/gi;
-  const codons = rnaSequence.match(validCodons);
-
-  if (!codons || codons.length * 3 !== rnaSequence.length)
-    throw new Error('Invalid codon');
-
+export const translate = (rnaSequence = '') => {
   const proteinCodonMap = {
     AUG: 'Methionine',
     UUU: 'Phenylalanine',
@@ -33,13 +25,15 @@ export const translate = rnaSequence => {
   };
 
   const polypeptide = [];
-  codons.every(codon => {
+  for (let i = 0; i < rnaSequence.length; i += 3) {
+    const codon = rnaSequence.slice(i, i + 3);
     const protein = proteinCodonMap[codon];
-    if (protein === 'STOP') return false;
+
+    if (protein === undefined) throw new Error('Invalid codon');
+    if (protein === 'STOP') break;
 
     polypeptide.push(protein);
-    return true;
-  });
+  }
 
   return polypeptide;
 };
